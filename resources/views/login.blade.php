@@ -79,9 +79,10 @@
 <body class="flex flex-col items-center justify-center">
 
     <div class="bg-slideshow">
-        <div class="bg-slide active" style="background-image: url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHGoHP0-Vm6JbEmmcc266Uy7F1VcvGUhx8kIEKsTMeGCDXy86JU86_MMnglb0qx6kegz9EN3o4J5MyUIQMUU5Gk3nbLJV56yT_G_5rXz2KUfMzCxNOFbEh5jGQAqNXLiVVw0Es0kQ=w408-h544-k-no')"></div>
-        <div class="bg-slide" style="background-image: url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAF6Ne3Gx8UpK3gUk32AbS_1bbJS5QD5rS6ZeK0eWtM7QXM_XOjGDtN_w-aMAIbKhbWzHfjLOzILpKs8snubiP3X6HdBJCdjz5Mdo2FAgkdKxbqelP-Wgbv85cojE8QdZX0KkIOBNQ')"></div>
-        <div class="bg-slide" style="background-image: url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAGwyX3yYGeyLbMF1bpeL8-xgKOEbq6DhWjD9Stlb1ivUEWrKtHdK2O6e6Yh6IdUdKPtVoA7Pwx7ikw9RG96H0UOV9EMYwNu45CAWqEWjSHrq_4EbjP3KlkvPkV9Mxy_qjkvilF6')"></div>
+        <div class="bg-slide active" style="background-image: url('https://i.ibb.co.com/4g3qz0Tw/b9d5694f-5599-4b3b-b841-f070df6c8809.jpg')"></div>
+        <div class="bg-slide" style="background-image: url('https://i.ibb.co.com/sphH3K3L/Whats-App-Image-2026-04-23-at-00-52-29.jpg')"></div>
+        <div class="bg-slide" style="background-image: url('https://i.ibb.co.com/xSCS1ryf/Whats-App-Image-2026-04-23-at-00-52-29-1.jpg')"></div>
+        <div class="bg-slide" style="background-image: url('https://i.ibb.co.com/ZRnncFHL/Whats-App-Image-2026-04-23-at-00-52-29-2.jpg')"></div>
         <div class="bg-overlay"></div>
     </div>
 
