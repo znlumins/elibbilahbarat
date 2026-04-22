@@ -13,24 +13,14 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            // Hitung User yang rolenya 'siswa' (atau sesuaikan dengan string di DB-mu)
             Stat::make('ANGGOTA', User::where('role', '!=', 'admin')->count()) 
-                ->description('Total Siswa Terdaftar')
-                ->color('info'),
-
-            // Hitung Admin secara spesifik
+                ->description('Total Siswa Terdaftar'),
             Stat::make('PETUGAS', User::where('role', 'admin')->count()) 
-                ->description('Admin Perpustakaan')
-                ->color('primary'),
-
+                ->description('Admin Perpustakaan'),
             Stat::make('BUKU', Book::count())
-                ->description('Total Koleksi Judul')
-                ->color('warning'),
-
-            // Hitung peminjaman yang sedang berlangsung (belum kembali)
+                ->description('Total Koleksi Judul'),
             Stat::make('PEMINJAMAN AKTIF', Loan::whereNull('return_date')->count())
-                ->description('Buku yang masih dibawa siswa')
-                ->color('danger'),
+                ->description('Buku yang masih dibawa siswa'),
         ];
     }
 }

@@ -4,11 +4,13 @@ namespace App\Filament\Pages;
 
 use App\Models\Loan;
 use App\Models\User;
+use App\Models\Book;
+use App\Models\Category;
 use App\Models\Setting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BaseDashboard;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class Dashboard extends BaseDashboard
 {
@@ -20,15 +22,19 @@ class Dashboard extends BaseDashboard
                 ->icon('heroicon-o-document-chart-bar')
                 ->color('success')
                 ->action(function () {
-                    // 1. Data Denda Lunas
+                    // 1. Data Inventaris (Semua Buku & Kategori)
+                    $books = Book::with('category')->get();
+                    $categories = Category::withCount('books')->get();
+
+                    // 2. Data Denda Lunas
                     $data_lunas = Loan::where('is_paid', true)
                         ->with(['user', 'book'])
                         ->get();
                     
-                    // 2. Setting denda per hari
+                    // 3. Setting denda per hari
                     $fine_per_day = Setting::where('key', 'fine_per_day')->first()->value ?? 0;
                     
-                    // 3. Data Piutang (Belum Bayar)
+                    // 4. Data Piutang (Belum Bayar / Masih Dipinjam & Telat)
                     $data_hutang = Loan::where('is_paid', false)
                         ->where(function ($q) {
                             $q->where('additional_fine', '>', 0)
@@ -44,21 +50,22 @@ class Dashboard extends BaseDashboard
                         ->with(['user', 'book'])
                         ->get();
 
-                    // 4. Top 10 Siswa
-                    $top_borrowers = User::where('role', 'siswa')
+                    // 5. Top 10 Siswa Teraktif (Sesuaikan role ke 'student')
+                    $top_borrowers = User::where('role', 'student')
                         ->withCount('loans')
                         ->orderBy('loans_count', 'desc')
                         ->limit(10)
                         ->get();
 
                     // --- LOGIC PEMANGGILAN VIEW ---
-                    // Cek apakah file ada di resources/views/reports/fines.blade.php
                     $viewName = view()->exists('reports.fines') ? 'reports.fines' : 'fines';
 
                     $pdf = Pdf::loadView($viewName, [ 
-                        'data_lunas' => $data_lunas,
-                        'data_hutang' => $data_hutang,
-                        'fine_per_day' => $fine_per_day,
+                        'books'         => $books,
+                        'categories'    => $categories,
+                        'data_lunas'    => $data_lunas,
+                        'data_hutang'   => $data_hutang,
+                        'fine_per_day'  => $fine_per_day,
                         'top_borrowers' => $top_borrowers,
                     ]);
 
@@ -66,7 +73,7 @@ class Dashboard extends BaseDashboard
 
                     return response()->streamDownload(
                         fn() => print($pdf->output()), 
-                        'LAPORAN_PERPUS_' . date('Y-m-d') . '.pdf'
+                        'LAPORAN_PERPUS_LENGKAP_' . date('Y-m-d') . '.pdf'
                     );
                 }),
         ];

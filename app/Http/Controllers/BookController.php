@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Loan;
+use App\Models\Setting; // Pastikan Model Setting diimport
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,22 +20,19 @@ class BookController extends Controller
                   ->orWhere('author', 'like', '%' . $request->search . '%');
         }
 
-        // Kita panggil relasi category-nya biar gak error di view
         $books = $query->with('category')->latest()->get();
 
         return view('welcome', compact('books'));
     }
 
-    // --- FUNGSI SHOW UNTUK DETAIL BUKU (SUDAH DITAMBAHKAN) ---
+    // Detail Buku
     public function show($id)
     {
-        // Ambil data buku berdasarkan ID, sertakan relasi kategori dan riwayat pinjamnya
         $book = Book::with(['category', 'loans.user'])->findOrFail($id);
-        
         return view('book-detail', compact('book'));
     }
 
-    // Fungsi Riwayat Pinjam Siswa
+    // Fungsi Riwayat Pinjam Siswa dengan Pengambilan Data QRIS
     public function myLoans()
     {
         // Pastikan siswa sudah login
@@ -47,6 +45,10 @@ class BookController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-        return view('my-loans', compact('loans'));
+        // AMBIL DATA QRIS DARI TABEL SETTINGS [berdasarkan EditSetting.php]
+        $qris = Setting::where('key', 'qris_image')->first();
+
+        // Kirim $loans dan $qris ke view
+        return view('my-loans', compact('loans', 'qris'));
     }
 }

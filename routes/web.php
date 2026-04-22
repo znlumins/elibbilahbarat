@@ -14,6 +14,7 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
 // User Only
 Route::middleware('auth')->group(function () {
     Route::get('/my-loans', [BookController::class, 'myLoans'])->name('my.loans');
